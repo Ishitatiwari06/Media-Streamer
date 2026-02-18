@@ -8,7 +8,7 @@ export default function SuggestionBox({ suggestions, onSelect }) {
       {suggestions.map((suggestion, idx) => (
         <li
           key={idx}
-          className="px-4 py-2 cursor-pointer hover:bg-slate-100 text-sm"
+          className="px-4 py-2 cursor-pointer hover:bg-slate-100 text-sm text-gray-900"
           onMouseDown={() => onSelect(suggestion)}
         >
           {suggestion}
