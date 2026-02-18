@@ -7,8 +7,10 @@ export default function Layout({children}) {
   return (
     <>
       <Navbar />
-      <Sidebar />
-      <div>{children}</div>
+      <div className="flex">
+        <Sidebar />
+        <div className="flex-1">{children}</div>
+      </div>
     </>
   )
 }

@@ -1,12 +1,13 @@
-import { useEffect, useState } from 'react'
+import { use, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 export default function Watch() {
-  const { id } = useParams()
-  const [videoDetails, setVideoDetails] = useState(null)
+  const { id } = useParams();
+  const [videoDetails, setVideoDetails] = useState(null);
+
   useEffect(() => {
     async function fetchVideoDetails() {
       if (!id) {
-        return
+        return;
       }
       try {
         const apiKey = import.meta.env.VITE_RAPID_API_KEY;
@@ -20,20 +21,34 @@ export default function Watch() {
         }
         const response = await fetch(
           `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id=${id}&key=${apiKey}`
-        )
-        const data = await response.json()
-        console.log('Video details:', data)
-        setVideoDetails(data.items[0])
+        );
+        const data = await response.json();
+        console.log('Video details:', data);
+        setVideoDetails(data.items[0]);
       } catch (error) {
-        console.error('Error fetching video details:', error)
+        console.error('Error fetching video details:', error);
       }
     }
+    fetchVideoDetails();
+  }, [id]);
 
-    fetchVideoDetails()
-  }, [id])
+  useEffect(() => {
+    if (!videoDetails) return;
+    const stored = JSON.parse(localStorage.getItem('watchHistory') || '[]');
+    const updated = [
+      {
+        id: videoDetails.id,
+        title: videoDetails.snippet.title,
+        thumbnail: videoDetails.snippet.thumbnails.high.url,
+        channel: videoDetails.snippet.channelTitle
+      },
+      ...stored.filter(item => item.id !== videoDetails.id)
+    ].slice(0, 20);
+    localStorage.setItem('watchHistory', JSON.stringify(updated));
+  }, [videoDetails]);
 
   if (!videoDetails) {
-    return <div>Loading video details...</div>
+    return <div>Loading video details...</div>;
   }
 
   return (
@@ -52,5 +67,5 @@ export default function Watch() {
       <p className="text-gray-700 mb-2">Likes: {videoDetails.statistics.likeCount}</p>
       <p className="text-gray-700 mb-2">Description: {videoDetails.snippet.description}</p>
     </div>
-  )
+  );
 }
