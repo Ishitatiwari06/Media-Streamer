@@ -36,9 +36,9 @@ export default function Navbar() {
 
   
   return (
-    <nav className="sticky top-0 z-50 border-b border-slate-200 bg-white/80 backdrop-blur">
+    <nav className="sticky top-0 z-50 border-b border-gray-900 bg-gray-900/95 backdrop-blur text-white">
       <div className="mx-auto flex max-w-6xl items-center gap-4 px-4 py-3 sm:px-6">
-        <Link to="/" className="text-lg font-semibold text-slate-900">
+        <Link to="/" className="text-lg font-semibold text-white">
           Media Streamer
         </Link>
 
